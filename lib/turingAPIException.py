@@ -1,5 +1,5 @@
 
-class VisualAPIException(Exception):
+class TuringAPIException(Exception):
 	def __init__(self, value):
 		self.value = value
 

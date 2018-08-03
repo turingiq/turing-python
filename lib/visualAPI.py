@@ -3,15 +3,14 @@ import json
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from lib.visualAPIException import VisualAPIException
+from lib.turingAPIException import TuringAPIException
 
 class VisualAPI:
 
 	def __init__(self,api_key,mode='live',api_version='v1'):
-		
-		
+				
 		if not api_key:
-			raise VisualAPIException('API key is not provided.')
+			raise TuringAPIException('API key is not provided.')
 		else:
 			self.api_key = api_key
 			authorization = "Bearer "+self.api_key
@@ -20,14 +19,14 @@ class VisualAPI:
 		if mode is 'live' or mode is 'sandbox':
 			self.mode = mode
 		else:
-			raise VisualAPIException('mode can only be either \'live\' or \'sandbox\'. You provided: '+mode)			
+			raise TuringAPIException('mode can only be either \'live\' or \'sandbox\'. You provided: '+mode)			
 
 		if api_version is not 'v1':
-			raise VisualAPIException('Currenly only \'v1\' is supported for api_version')
+			raise TuringAPIException('Currenly only \'v1\' is supported for api_version')
 		else:
 			self.api_version = api_version
 
-		self.base_uri='https://api.turingiq.com/'+self.api_version
+		self.base_uri='https://api.turingiq1.com/'+self.api_version
 
 
 	def autocrop(self,image_url):
@@ -36,15 +35,15 @@ class VisualAPI:
 
 		try:
 			response = requests.post(end_point,headers=self.headers,data=data)
-			response = json.loads(response.text)
+			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
+				response = json.loads(response.text)
 			if 'error' in response:
 				# return (response['error'])
-				raise VisualAPIException(response['error'])
+				raise TuringAPIException(response['error'])
 			else:
 				return response
 		except Exception as e:
 			print(e)
-			# raise VisualAPIException(e)
 
 
 	def search(self,image_url,filters={},crop_box=[]):
@@ -64,16 +63,15 @@ class VisualAPI:
 				'filter3':filters['filter3'] if 'filter3' in filters else None,
 				}
 		try:
-			response = requests.post(end_point,headers=self.headers,data=data)		
-			response = json.loads(response.text)
+			response = requests.post(end_point,headers=self.headers,data=data)
+			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
+				response = json.loads(response.text)
 			if 'error' in response:
-				# return (response['error'])
-				raise VisualAPIException(response['error'])
+				raise TuringAPIException(response['error'])
 			else:
 				return response
 		except Exception as e:
 			print(e)
-			# raise VisualAPIException(e)
 
 
 	def recommendations(self,id,filters={}):
@@ -90,15 +88,14 @@ class VisualAPI:
 				}
 		try:
 			response = requests.get(end_point,headers=self.headers,params=params)
-			response = json.loads(response.text)
+			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
+				response = json.loads(response.text)
 			if 'error' in response:
-				# return (response['error'])
-				raise VisualAPIException(response['error'])
+				raise TuringAPIException(response['error'])
 			else:
 				return response
 		except Exception as e:
 			print(e)
-			# raise VisualAPIException(e)
 
 
 	def insert(self,id,image_url,filters={},metadata={}):
@@ -116,18 +113,16 @@ class VisualAPI:
 				}
 		for key in metadata:
 			data[key] = metadata[key]
-
 		try:
 			response = requests.post(end_point,headers=self.headers,data=data)
-			response = json.loads(response.text)
+			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
+				response = json.loads(response.text)
 			if 'error' in response:
-				# return (response['error'])
-				raise VisualAPIException(response['error'])
+				raise TuringAPIException(response['error'])
 			else:
 				return response
 		except Exception as e:
 			print(e)
-			# raise VisualAPIException(e)
 
 	def update(self,image_url=None,filters={},metadata={}):
 		return self.insert(image_url,filters,metadata)
@@ -140,14 +135,19 @@ class VisualAPI:
 			path = '/demo-similar/'+str(id)
 
 		end_point = self.base_uri+path
-
 		try:
 			response = requests.delete(end_point,headers=self.headers)
-			response = json.loads(response.text)
+			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
+				response = json.loads(response.text)
 			if 'error' in response:
-				# return (response['error'])
-				raise VisualAPIException(response['error'])
+				raise TuringAPIException(response['error'])
 			else:
 				return response
 		except Exception as e:
 			print(e)
+
+if __name__ == "__main__":
+
+	visualAPI = VisualAPI('PtddkwjEm6fNCFbESrpYig1','sandbox')
+	response = visualAPI.search("http://www.cheaptshirtspot.com/wp-content/uploads/2016/01/Star-Wars-t-shirt-Captain-America-T-Shirts-Men-Cotton-Diamond-Train-Hard-Man-T-Shirt.jpg")
+	# print(response)
