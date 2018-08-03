@@ -1,12 +1,15 @@
 import requests
 import json
-from visualAPIException import VisualAPIException
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from lib.visualAPIException import VisualAPIException
 
 class VisualAPI:
 
 	def __init__(self,api_key,mode='live',api_version='v1'):
 		
-		self.base_uri='https://api.turingiq.com/'
+		
 		if not api_key:
 			raise VisualAPIException('API key is not provided.')
 		else:
@@ -24,25 +27,15 @@ class VisualAPI:
 		else:
 			self.api_version = api_version
 
+		self.base_uri='https://api.turingiq.com/'+self.api_version
 
-	def search(self,image_url,filters={},crop_box=[]):
-		if(self.mode == 'live'):
-			path = '/similar/search'
-		else:
-			path = '/demo-similar/search'
 
-		crop = None
-		if(crop_box):
-			crop = ','.join(str(element) for element in self.crop_box)
-		data = {"url":image_url,
-				"crop": crop,
-				'filter1':filters['filter1'] if 'filter1' in filters else None,
-				'filter2':filters['filter2'] if 'filter2' in filters else None,
-				'filter3':filters['filter3'] if 'filter3' in filters else None,
-				}
+	def autocrop(self,image_url):
+		end_point = self.base_uri+'/autocrop'
+		data = {"url":image_url}
+
 		try:
-			response = requests.post(self.base_uri+self.api_version+path,data=data,headers=self.headers)
-			
+			response = requests.post(end_point,headers=self.headers,data=data)
 			response = json.loads(response.text)
 			if 'error' in response:
 				# return (response['error'])
@@ -51,4 +44,110 @@ class VisualAPI:
 				return response
 		except Exception as e:
 			print(e)
+			# raise VisualAPIException(e)
 
+
+	def search(self,image_url,filters={},crop_box=[]):
+		if(self.mode == 'live'):
+			path = '/similar/search'
+		else:
+			path = '/demo-similar/search'
+
+		end_point = self.base_uri+path
+		crop = None
+		if(crop_box):
+			crop = ','.join(str(element) for element in crop_box)
+		data = {"url":image_url,
+				"crop": crop,
+				'filter1':filters['filter1'] if 'filter1' in filters else None,
+				'filter2':filters['filter2'] if 'filter2' in filters else None,
+				'filter3':filters['filter3'] if 'filter3' in filters else None,
+				}
+		try:
+			response = requests.post(end_point,headers=self.headers,data=data)		
+			response = json.loads(response.text)
+			if 'error' in response:
+				# return (response['error'])
+				raise VisualAPIException(response['error'])
+			else:
+				return response
+		except Exception as e:
+			print(e)
+			# raise VisualAPIException(e)
+
+
+	def recommendations(self,id,filters={}):
+		if(self.mode == 'live'):
+			path = '/similar/'+str(id)
+		else:
+			path = '/demo-similar/'+str(id)
+
+		end_point = self.base_uri+path
+		params = {
+				'filter1':filters['filter1'] if 'filter1' in filters else None,
+				'filter2':filters['filter2'] if 'filter2' in filters else None,
+				'filter3':filters['filter3'] if 'filter3' in filters else None,
+				}
+		try:
+			response = requests.get(end_point,headers=self.headers,params=params)
+			response = json.loads(response.text)
+			if 'error' in response:
+				# return (response['error'])
+				raise VisualAPIException(response['error'])
+			else:
+				return response
+		except Exception as e:
+			print(e)
+			# raise VisualAPIException(e)
+
+
+	def insert(self,id,image_url,filters={},metadata={}):
+		if(self.mode == 'live'):
+			path = '/similar/create'
+		else:
+			path = '/demo-similar/create'
+
+		end_point = self.base_uri+path
+		data = {'id':id,
+				'url':image_url,
+				'filter1':filters['filter1'] if 'filter1' in filters else None,
+				'filter2':filters['filter2'] if 'filter2' in filters else None,
+				'filter3':filters['filter3'] if 'filter3' in filters else None,
+				}
+		for key in metadata:
+			data[key] = metadata[key]
+
+		try:
+			response = requests.post(end_point,headers=self.headers,data=data)
+			response = json.loads(response.text)
+			if 'error' in response:
+				# return (response['error'])
+				raise VisualAPIException(response['error'])
+			else:
+				return response
+		except Exception as e:
+			print(e)
+			# raise VisualAPIException(e)
+
+	def update(self,image_url=None,filters={},metadata={}):
+		return self.insert(image_url,filters,metadata)
+
+
+	def delete(self,id):
+		if(self.mode == 'live'):
+			path = '/similar/'+str(id)
+		else:
+			path = '/demo-similar/'+str(id)
+
+		end_point = self.base_uri+path
+
+		try:
+			response = requests.delete(end_point,headers=self.headers)
+			response = json.loads(response.text)
+			if 'error' in response:
+				# return (response['error'])
+				raise VisualAPIException(response['error'])
+			else:
+				return response
+		except Exception as e:
+			print(e)
