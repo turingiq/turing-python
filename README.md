@@ -143,5 +143,5 @@ response = visual_api.recommendations(id, filters)
 ### Run Tests
 
 ```sh
-API_KEY=api_key python3 tes/visualAPITEst.py
+API_KEY=api_key python3 test/visualAPITest.py
 ```

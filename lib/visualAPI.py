@@ -26,7 +26,7 @@ class VisualAPI:
 		else:
 			self.api_version = api_version
 
-		self.base_uri='https://api.turingiq1.com/'+self.api_version
+		self.base_uri='https://api.turingiq.com/'+self.api_version
 
 
 	def autocrop(self,image_url):
@@ -145,9 +145,3 @@ class VisualAPI:
 				return response
 		except Exception as e:
 			print(e)
-
-if __name__ == "__main__":
-
-	visualAPI = VisualAPI('PtddkwjEm6fNCFbESrpYig1','sandbox')
-	response = visualAPI.search("http://www.cheaptshirtspot.com/wp-content/uploads/2016/01/Star-Wars-t-shirt-Captain-America-T-Shirts-Men-Cotton-Diamond-Train-Hard-Man-T-Shirt.jpg")
-	# print(response)
