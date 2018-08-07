@@ -1,2 +1,2 @@
 from .visualAPI import VisualAPI
-from .visualAPIException import VisualAPIException
+from .turingAPIException import TuringAPIException

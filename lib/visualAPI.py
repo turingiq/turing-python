@@ -37,11 +37,7 @@ class VisualAPI:
 			response = requests.post(end_point,headers=self.headers,data=data)
 			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
 				response = json.loads(response.text)
-			if 'error' in response:
-				# return (response['error'])
-				raise TuringAPIException(response['error'])
-			else:
-				return response
+			return response
 		except Exception as e:
 			print(e)
 
@@ -65,11 +61,8 @@ class VisualAPI:
 		try:
 			response = requests.post(end_point,headers=self.headers,data=data)
 			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
-				response = json.loads(response.text)
-			if 'error' in response:
-				raise TuringAPIException(response['error'])
-			else:
-				return response
+				response = json.loads(response.text)	
+			return response
 		except Exception as e:
 			print(e)
 
@@ -90,10 +83,7 @@ class VisualAPI:
 			response = requests.get(end_point,headers=self.headers,params=params)
 			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
 				response = json.loads(response.text)
-			if 'error' in response:
-				raise TuringAPIException(response['error'])
-			else:
-				return response
+			return response
 		except Exception as e:
 			print(e)
 
@@ -117,10 +107,7 @@ class VisualAPI:
 			response = requests.post(end_point,headers=self.headers,data=data)
 			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
 				response = json.loads(response.text)
-			if 'error' in response:
-				raise TuringAPIException(response['error'])
-			else:
-				return response
+			return response
 		except Exception as e:
 			print(e)
 
@@ -137,11 +124,8 @@ class VisualAPI:
 		end_point = self.base_uri+path
 		try:
 			response = requests.delete(end_point,headers=self.headers)
-			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
+			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):	
 				response = json.loads(response.text)
-			if 'error' in response:
-				raise TuringAPIException(response['error'])
-			else:
-				return response
+			return response
 		except Exception as e:
 			print(e)
