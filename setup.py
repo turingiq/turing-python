@@ -13,11 +13,10 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/turingiq/turing-python",
     packages=setuptools.find_packages(),
-    install_requires=['requests==2.*'
-                    ],
+    install_requires=['requests==2.*'],
     classifiers=(
         "Programming Language :: Python :: 3",
-        "License :: Apache 2.0",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ),
 )
