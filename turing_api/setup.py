@@ -11,7 +11,7 @@ setuptools.setup(
     description="Turing visual search and visually similar recommendations API library for Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/turingiq/turing-python",
     packages=setuptools.find_packages(),
     classifiers=(
         "Programming Language :: Python :: 3",
