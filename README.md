@@ -4,11 +4,18 @@ Turing visual search and visually similar recommendations API library for python
 
 Setup
 -----
-
-
+This package is available through pip and can be install using following command.
+```console
+pip3 install turing-api
+```
 
 Initialize
 ----------
+import the `visualAPI` class as bellow.
+
+```python
+from turing_api.lib.visualAPI import VisualAPI
+```
 
 You can initialize the `VisualAPI` class with below parameters.
 
@@ -17,7 +24,6 @@ api_key = 'your_api_key' # You can get API key when you login at: https://www.tu
 mode = 'live'            # the mode can be either `live` or `sandbox`. Default mode is `live`.
 visual_api = VisualAPI(api_key, mode)
 ```
-
 
 Autocrop
 --------
