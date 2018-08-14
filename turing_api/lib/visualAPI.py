@@ -1,14 +1,11 @@
 import requests
 import json
-import os
-import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from lib.turingAPIException import TuringAPIException
+from turing_api.lib.turingAPIException import TuringAPIException
 
 class VisualAPI:
 
 	def __init__(self,api_key,mode='live',api_version='v1'):
-				
+
 		if not api_key:
 			raise TuringAPIException('API key is not provided.')
 		else:
@@ -19,7 +16,7 @@ class VisualAPI:
 		if mode is 'live' or mode is 'sandbox':
 			self.mode = mode
 		else:
-			raise TuringAPIException('mode can only be either \'live\' or \'sandbox\'. You provided: '+mode)			
+			raise TuringAPIException('mode can only be either \'live\' or \'sandbox\'. You provided: '+mode)
 
 		if api_version is not 'v1':
 			raise TuringAPIException('Currenly only \'v1\' is supported for api_version')
@@ -61,7 +58,7 @@ class VisualAPI:
 		try:
 			response = requests.post(end_point,headers=self.headers,data=data)
 			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
-				response = json.loads(response.text)	
+				response = json.loads(response.text)
 			return response
 		except Exception as e:
 			print(e)
@@ -114,7 +111,6 @@ class VisualAPI:
 	def update(self,image_url=None,filters={},metadata={}):
 		return self.insert(image_url,filters,metadata)
 
-
 	def delete(self,id):
 		if(self.mode == 'live'):
 			path = '/similar/'+str(id)
@@ -124,7 +120,7 @@ class VisualAPI:
 		end_point = self.base_uri+path
 		try:
 			response = requests.delete(end_point,headers=self.headers)
-			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):	
+			if response.status_code==200 or (response.status_code>=400 and response.status_code<500):
 				response = json.loads(response.text)
 			return response
 		except Exception as e:

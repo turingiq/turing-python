@@ -1,8 +1,6 @@
 import unittest
 import os
-import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from lib import VisualAPI
+from turing_api.lib.visualAPI import VisualAPI
 
 class VisualAPITest(unittest.TestCase):
 
