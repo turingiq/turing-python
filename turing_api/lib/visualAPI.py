@@ -108,8 +108,8 @@ class VisualAPI:
 		except Exception as e:
 			print(e)
 
-	def update(self,image_url=None,filters={},metadata={}):
-		return self.insert(image_url,filters,metadata)
+	def update(self,id,image_url=None,filters={},metadata={}):
+		return self.insert(id,image_url,filters,metadata)
 
 	def delete(self,id):
 		if(self.mode == 'live'):
