@@ -151,3 +151,11 @@ response = visual_api.recommendations(id, filters)
 ```sh
 API_KEY=api_key python3 test/visualAPITest.py
 ```
+
+### Publish Package
+
+```sh
+python3 setup.py sdist bdist_wheel
+
+twine upload
+```

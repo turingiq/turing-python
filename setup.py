@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="turing_api",
-    version="1.0.0",
+    version="1.0.1",
     author="Turing Analytics",
     author_email="aditya@turingiq.com",
     description="Turing visual search and visually similar recommendations API library for Python",
